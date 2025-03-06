@@ -12,9 +12,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@EntityListeners((AuditingEntityListener.class))
+@EntityListeners(AuditingEntityListener.class)
 public class Role {
     @Id
+    @GeneratedValue
     private Integer id;
     @Column(unique = true)
     private String name;

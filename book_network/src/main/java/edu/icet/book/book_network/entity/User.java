@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 @EntityListeners(AuditingEntityListener.class)
 public class User implements UserDetails, Principal {
     @Id
+    @GeneratedValue
     private Integer id;
     private String firstName;
     private String lastName;
@@ -90,7 +91,7 @@ public class User implements UserDetails, Principal {
         return true;
     }
 
-    private String getFullName() {
+    public String getFullName() {
         return firstName + " " + lastName;
     }
 }

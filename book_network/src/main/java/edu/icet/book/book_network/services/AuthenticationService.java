@@ -6,8 +6,11 @@ import edu.icet.book.book_network.entity.User;
 import edu.icet.book.book_network.repository.RoleRepository;
 import edu.icet.book.book_network.repository.TokenRepository;
 import edu.icet.book.book_network.repository.UserRepository;
+import edu.icet.book.book_network.util.email.EmailTemplateName;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +25,11 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
+    private final EmailService emailService;
+    @Value("${application.mailing.frontend.activation-url}")
+    private String activationUrl;
 
-    public void register(@Valid RegistrationRequest registrationRequest) {
+    public void register(@Valid RegistrationRequest registrationRequest) throws MessagingException {
         var userRole = roleRepository.findByName("USER")
                 .orElseThrow(() -> new RuntimeException("User role not found"));
         var user = User.builder()
@@ -39,8 +45,15 @@ public class AuthenticationService {
         sendValidationEmail(user);
     }
 
-    private void sendValidationEmail(User user) {
+    private void sendValidationEmail(User user) throws MessagingException {
         var newToken = generateAndSaveActivationToken(user);
+        emailService.sendEmail(
+                user.getEmail(),
+                user.getFullName(),
+                EmailTemplateName.ACTIVATION_ACCOUNT,
+                activationUrl,
+                newToken,
+                "Account activation");
     }
 
     private String generateAndSaveActivationToken(User user) {

@@ -19,9 +19,9 @@ import java.util.function.Function;
 @Service
 @RequiredArgsConstructor
 public class JwtService {
-    @Value("${application.security.jwt.expiration}")
+    @Value("${application.security.expiration}")
     private Long jwtExpiration;
-    @Value("${application.security.jwt.secret-key}")
+    @Value("${application.security.secret-key}")
     private String secretKey;
 
     public String generateToken(UserDetails userDetails) {

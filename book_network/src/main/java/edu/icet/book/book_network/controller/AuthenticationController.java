@@ -3,6 +3,7 @@ package edu.icet.book.book_network.controller;
 import edu.icet.book.book_network.dto.RegistrationRequest;
 import edu.icet.book.book_network.services.AuthenticationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,11 @@ public class AuthenticationController {
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseEntity<?> register(@RequestBody @Valid RegistrationRequest registrationRequest) {
-        authenticationService.register(registrationRequest);
+        try {
+            authenticationService.register(registrationRequest);
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
         return ResponseEntity.accepted().build();
     }
 }

@@ -30,12 +30,14 @@ public class JwtFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain) throws ServletException, IOException {
         if (request.getServletPath().contains("/api/v1/auth")) {
             filterChain.doFilter(request, response);
+            return;
         }
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String email;
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
+            return;
         }
         jwt = authHeader.substring(7);
         email = jwtService.extractUsername(jwt);
