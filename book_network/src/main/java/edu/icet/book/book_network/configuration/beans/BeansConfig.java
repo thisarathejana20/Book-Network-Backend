@@ -22,7 +22,8 @@ public class BeansConfig {
         return daoAuthenticationProvider;
     }
 
-    private PasswordEncoder passwordEncoder() {
+    @Bean
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
