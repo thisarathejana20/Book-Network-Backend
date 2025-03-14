@@ -3,7 +3,7 @@ package edu.icet.book.book_network.controller;
 import edu.icet.book.book_network.dto.AuthenticationRequest;
 import edu.icet.book.book_network.dto.AuthenticationResponse;
 import edu.icet.book.book_network.dto.RegistrationRequest;
-import edu.icet.book.book_network.services.AuthenticationService;
+import edu.icet.book.book_network.services.impl.AuthenticationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;

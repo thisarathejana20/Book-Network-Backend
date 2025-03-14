@@ -1,6 +1,6 @@
 package edu.icet.book.book_network.configuration.jwt;
 
-import edu.icet.book.book_network.services.JwtService;
+import edu.icet.book.book_network.services.impl.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

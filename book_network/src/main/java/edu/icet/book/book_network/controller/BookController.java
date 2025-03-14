@@ -2,8 +2,9 @@ package edu.icet.book.book_network.controller;
 
 import edu.icet.book.book_network.dto.BookRequest;
 import edu.icet.book.book_network.dto.BookResponse;
+import edu.icet.book.book_network.dto.BorrowedBookResponse;
 import edu.icet.book.book_network.dto.PageResponse;
-import edu.icet.book.book_network.services.BookService;
+import edu.icet.book.book_network.services.impl.BookServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @Tag(name = "Book")
 public class BookController {
-    private final BookService bookService;
+    private final BookServiceImpl bookService;
 
     @PostMapping
     public ResponseEntity<Integer> saveBook(@RequestBody @Valid BookRequest bookRequest,
@@ -44,5 +45,13 @@ public class BookController {
             @RequestParam(name = "size", defaultValue = "10") Integer size,
             Authentication connectedUser) {
         return ResponseEntity.ok(bookService.findAllBooksByOwner(page, size, connectedUser));
+    }
+
+    @GetMapping("/borrowed")
+    public ResponseEntity<PageResponse<BorrowedBookResponse>> finAllBorrowedBooks(
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "10") Integer size,
+            Authentication connectedUser) {
+        return ResponseEntity.ok(bookService.findAllBorrowedBooks(page, size, connectedUser));
     }
 }

@@ -1,4 +1,4 @@
-package edu.icet.book.book_network.services;
+package edu.icet.book.book_network.services.impl;
 
 import edu.icet.book.book_network.dto.AuthenticationRequest;
 import edu.icet.book.book_network.dto.AuthenticationResponse;
@@ -30,7 +30,7 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
-    private final EmailService emailService;
+    private final EmailServiceImpl emailService;
     @Value("${application.mailing.frontend.activation-url}")
     private String activationUrl;
     private final AuthenticationManager authenticationManager;

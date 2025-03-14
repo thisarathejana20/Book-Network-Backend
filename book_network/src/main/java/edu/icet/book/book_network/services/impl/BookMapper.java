@@ -1,8 +1,10 @@
-package edu.icet.book.book_network.services;
+package edu.icet.book.book_network.services.impl;
 
 import edu.icet.book.book_network.dto.BookRequest;
 import edu.icet.book.book_network.dto.BookResponse;
+import edu.icet.book.book_network.dto.BorrowedBookResponse;
 import edu.icet.book.book_network.entity.Book;
+import edu.icet.book.book_network.entity.BookTransactionHistory;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,6 +33,18 @@ public class BookMapper {
                 .rate(book.getRate())
                 .archived(book.isArchived())
                 .sharable(book.isSharable())
+                .build();
+    }
+
+    public BorrowedBookResponse toBorrowedBookResponse(BookTransactionHistory bookTransactionHistory) {
+        return BorrowedBookResponse.builder()
+                .id(bookTransactionHistory.getBook().getId())
+                .title(bookTransactionHistory.getBook().getTitle())
+                .author(bookTransactionHistory.getBook().getAuthor())
+                .isbn(bookTransactionHistory.getBook().getIsbn())
+                .returned(bookTransactionHistory.isReturned())
+                .returnApproved(bookTransactionHistory.isReturnApproved())
+                .rate(bookTransactionHistory.getBook().getRate())
                 .build();
     }
 }
