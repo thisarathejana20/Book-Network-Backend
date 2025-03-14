@@ -54,4 +54,32 @@ public class BookController {
             Authentication connectedUser) {
         return ResponseEntity.ok(bookService.findAllBorrowedBooks(page, size, connectedUser));
     }
+
+    @GetMapping("/returned")
+    public ResponseEntity<PageResponse<BorrowedBookResponse>> finAllReturnedBooks(
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "10") Integer size,
+            Authentication connectedUser) {
+        return ResponseEntity.ok(bookService.findAllReturnedBooks(page, size, connectedUser));
+    }
+
+    @PatchMapping("/sharable/{id}")
+    public ResponseEntity<Integer> setSharable(@PathVariable Integer id, Authentication connectedUser) {
+        return ResponseEntity.ok(bookService.setSharable(id, connectedUser));
+    }
+
+    @PatchMapping("/archive/{id}")
+    public ResponseEntity<Integer> setArchived(@PathVariable Integer id, Authentication connectedUser) {
+        return ResponseEntity.ok(bookService.setArchived(id, connectedUser));
+    }
+
+    @PostMapping("/borrow/{id}")
+    public ResponseEntity<Integer> borrowBook(@PathVariable Integer id, Authentication connectedUser) {
+        return ResponseEntity.ok(bookService.borrowBook(id, connectedUser));
+    }
+
+    @PostMapping("/return/{id}")
+    public ResponseEntity<Integer> returnBook(@PathVariable Integer id, Authentication connectedUser) {
+        return ResponseEntity.ok(bookService.returnBook(id, connectedUser));
+    }
 }

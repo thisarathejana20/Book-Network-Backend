@@ -2,6 +2,7 @@ package edu.icet.book.book_network.util.exception;
 
 import edu.icet.book.book_network.dto.ExceptionResponse;
 import edu.icet.book.book_network.util.BusinessErrorCodes;
+import edu.icet.book.book_network.util.exception.custom.OperationNotPermittedException;
 import jakarta.mail.MessagingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -79,6 +80,14 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ExceptionResponse.builder()
                         .errorDescription("Internal server error. Please try again later or contact support.")
+                        .error(exception.getMessage())
+                        .build());
+    }
+
+    @ExceptionHandler(OperationNotPermittedException.class)
+    public ResponseEntity<ExceptionResponse> handleException(OperationNotPermittedException exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ExceptionResponse.builder()
                         .error(exception.getMessage())
                         .build());
     }
