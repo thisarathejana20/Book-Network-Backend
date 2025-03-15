@@ -5,6 +5,7 @@ import edu.icet.book.book_network.dto.BookResponse;
 import edu.icet.book.book_network.dto.BorrowedBookResponse;
 import edu.icet.book.book_network.entity.Book;
 import edu.icet.book.book_network.entity.BookTransactionHistory;
+import edu.icet.book.book_network.util.file.FileUtils;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,7 +30,7 @@ public class BookMapper {
                 .synopsis(book.getSynopsis())
                 .isbn(book.getIsbn())
                 .owner(book.getOwner().getEmail())
-// todo               .bookCover(book.getBookCover())
+                .bookCover(FileUtils.readFileFromLocation(book.getBookCover()))
                 .rate(book.getRate())
                 .archived(book.isArchived())
                 .sharable(book.isSharable())
