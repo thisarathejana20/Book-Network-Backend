@@ -5,12 +5,14 @@ import edu.icet.book.book_network.dto.BookResponse;
 import edu.icet.book.book_network.dto.BorrowedBookResponse;
 import edu.icet.book.book_network.dto.PageResponse;
 import edu.icet.book.book_network.services.impl.BookServiceImpl;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("books")
@@ -81,5 +83,20 @@ public class BookController {
     @PostMapping("/return/{id}")
     public ResponseEntity<Integer> returnBook(@PathVariable Integer id, Authentication connectedUser) {
         return ResponseEntity.ok(bookService.returnBook(id, connectedUser));
+    }
+
+    @PostMapping("/return/approve/{id}")
+    public ResponseEntity<Integer> approveReturn(@PathVariable Integer id, Authentication connectedUser) {
+        return ResponseEntity.ok(bookService.approveReturn(id, connectedUser));
+    }
+
+    @PostMapping(value = "/cover/{id}", consumes = "multipart/form-data")
+    public ResponseEntity<?> uploadBookCoverPhoto(
+            @PathVariable Integer id,
+            @Parameter()
+            @RequestPart("file") MultipartFile file,
+            Authentication connectedUser
+    ) {
+        return ResponseEntity.ok(bookService.uploadBookCoverPhoto(id, file, connectedUser));
     }
 }

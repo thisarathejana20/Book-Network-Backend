@@ -19,7 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-
+import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,6 +29,7 @@ public class BookServiceImpl {
     private final BookMapper bookMapper;
     private final BookRepository bookRepository;
     private final BookTransactionHistoryRepository bookTransactionHistoryRepository;
+    private final FileStorageServiceImpl fileStorageService;
 
     public Integer save(BookRequest bookRequest, Authentication connectedUser) {
         User user = (User) connectedUser.getPrincipal();
@@ -181,5 +182,29 @@ public class BookServiceImpl {
                 .orElseThrow(() -> new OperationNotPermittedException("You have not borrowed this book"));
         transaction.setReturned(true);
         return bookTransactionHistoryRepository.save(transaction).getId();
+    }
+
+    public Integer approveReturn(Integer id, Authentication connectedUser) {
+        User user = (User) connectedUser.getPrincipal();
+        Book book = bookRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Book not found"));
+        if (book.isArchived() || !book.isSharable()) {
+            throw new OperationNotPermittedException("This book is not available");
+        }
+        if (Objects.equals(book.getOwner().getId(), user.getId())) {
+            throw new OperationNotPermittedException("You cannot return your own book");
+        }
+        BookTransactionHistory transaction = bookTransactionHistoryRepository.
+                findByBookIdAndOwnerId(id, user.getId())
+                .orElseThrow(() -> new OperationNotPermittedException("Book is not returned yet."));
+        transaction.setReturnApproved(true);
+        return bookTransactionHistoryRepository.save(transaction).getId();
+    }
+
+    public void uploadBookCoverPhoto(Integer id, MultipartFile file, Authentication connectedUser) {
+        User user = (User) connectedUser.getPrincipal();
+        Book book = bookRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Book not found"));
+        var bookCover = fileStorageService.saveFile(file,user.getId());
+        book.setBookCover(bookCover);
+        bookRepository.save(book);
     }
 }
