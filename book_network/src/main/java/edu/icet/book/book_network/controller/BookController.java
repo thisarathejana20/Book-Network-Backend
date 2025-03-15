@@ -91,12 +91,12 @@ public class BookController {
     }
 
     @PostMapping(value = "/cover/{id}", consumes = "multipart/form-data")
-    public ResponseEntity<?> uploadBookCoverPhoto(
+    public void uploadBookCoverPhoto(
             @PathVariable Integer id,
             @Parameter()
             @RequestPart("file") MultipartFile file,
             Authentication connectedUser
     ) {
-        return ResponseEntity.ok(bookService.uploadBookCoverPhoto(id, file, connectedUser));
+        bookService.uploadBookCoverPhoto(id, file, connectedUser);
     }
 }
