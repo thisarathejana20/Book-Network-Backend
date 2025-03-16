@@ -28,13 +28,18 @@ public class JwtFilter extends OncePerRequestFilter {
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain) throws ServletException, IOException {
-        if (request.getServletPath().contains("/api/v1/auth")) {
+        if (request.getServletPath().contains("/api/v1/auth") ||
+                request.getServletPath().contains("/swagger-ui.html") ||
+                request.getServletPath().contains("/swagger-ui/index.html") ||
+                request.getServletPath().contains("/v3/api-docs") ||
+                request.getServletPath().contains("/v3/api-docs/**")) {
             filterChain.doFilter(request, response);
             return;
         }
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String email;
+
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;

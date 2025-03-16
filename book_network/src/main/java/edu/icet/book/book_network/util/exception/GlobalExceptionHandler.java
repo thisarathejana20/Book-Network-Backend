@@ -1,7 +1,6 @@
 package edu.icet.book.book_network.util.exception;
 
 import edu.icet.book.book_network.dto.ExceptionResponse;
-import edu.icet.book.book_network.util.BusinessErrorCodes;
 import edu.icet.book.book_network.util.exception.custom.OperationNotPermittedException;
 import jakarta.mail.MessagingException;
 import org.springframework.http.HttpStatus;

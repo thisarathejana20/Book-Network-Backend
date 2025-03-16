@@ -1,6 +1,7 @@
 package edu.icet.book.book_network.controller;
 
 import edu.icet.book.book_network.dto.FeedbackRequest;
+import edu.icet.book.book_network.dto.FeedbackResponse;
 import edu.icet.book.book_network.dto.PageResponse;
 import edu.icet.book.book_network.services.FeedbackService;
 import io.swagger.v3.oas.annotations.tags.Tag;

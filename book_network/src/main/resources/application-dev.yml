@@ -36,3 +36,11 @@ application:
   file:
     upload:
       photos-output-path: ./uploads
+
+springdoc:
+  api-docs:
+    enabled: true
+
+logging:
+  level:
+    org.springframework.security: DEBUG
